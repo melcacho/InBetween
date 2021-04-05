@@ -7,29 +7,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
+
     <ImageView
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="40dp"
             android:layout_centerHorizontal="true"
             android:layout_width="300dp"
             android:layout_height="200dp"
-            app:srcCompat="@drawable/introBG"
+            app:srcCompat="@drawable/intro_bg"
             android:id="@+id/imgIntroBG"/>
+
     <ImageView
             android:layout_margin="10dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:srcCompat="@drawable/question"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:srcCompat="@drawable/ic_question_mark"
             android:id="@+id/imgHowToPlay"/>
 
     <Button
-            android:background="@drawable/btnplay"
+            android:background="@drawable/btn_play"
             android:layout_below="@id/imgIntroBG"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
-            android:text="@string/btnPlay"
-            android:textSize="15dp"
+            android:text="@string/btn_play"
+            android:textSize="15sp"
             android:textColor="#ffffff"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:id="@+id/btnPlay"/>
+            android:id="@+id/btnPlay" android:onClick="openGameActivity"/>
+
 </RelativeLayout>

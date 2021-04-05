@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="#2b2d2c"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".InBetween">
+
+    <TextView
+            android:background="@drawable/txt_money"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="535dp"
+            android:text="@string/money"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:textColor="#ffffff"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:id="@+id/txt_money"/>
+
+    <RelativeLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="600dp"
+            android:layout_height="250dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:id="@+id/card_panel">
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="600dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/card_panel">
+
+        <Button
+                android:text="@string/btn_fold"
+                android:layout_marginStart="180dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:id="@+id/left_button"/>
+
+        <Button
+                android:text="@string/btn_bet"
+                android:layout_toEndOf="@id/left_button"
+                android:layout_marginStart="10dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:id="@+id/right_button"/>
+        <SeekBar
+                android:text="@string/btn_bet"
+                android:layout_toEndOf="@id/right_button"
+                android:layout_marginStart="10dp"
+                android:layout_width="190dp"
+                android:layout_height="50dp"
+                android:id="@+id/seekBar"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

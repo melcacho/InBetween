@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">In-Between</string>
-    <string name="btnPlay">Play</string>
-    <string name="txtBet">Place money</string>
+    <string name="app_name">InBetween</string>
+    <string name="btn_play">Play</string>
+    <string name="money">0,000,000</string>
+    <string name="btn_fold">Fold</string>
+    <string name="btn_bet">Bet</string>
 </resources>
