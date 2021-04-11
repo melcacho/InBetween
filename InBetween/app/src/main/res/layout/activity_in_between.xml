@@ -9,10 +9,9 @@
         tools:context=".InBetween">
 
     <TextView
-            app:srcCompat="@drawable/ic_money"
-            android:background="@drawable/txt_money"
             android:layout_marginTop="10dp"
-            android:layout_marginHorizontal="620dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="10dp"
             android:text="@string/money"
             android:gravity="center"
             android:textAlignment="center"
@@ -20,108 +19,155 @@
             android:textColor="#FFFFFF"
             android:layout_width="100dp"
             android:layout_height="24dp"
+            android:background="@drawable/txt_money"
             android:id="@+id/txt_money"/>
+
     <RelativeLayout
             android:background="#2b2d2c"
-            android:layout_width="720dp"
+            android:layout_width="650dp"
             android:layout_height="250dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:id="@+id/card_panel">
+
         <TextView
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/card_table"
-                android:layout_width="400dp"
+                android:layout_width="500dp"
                 android:layout_height="250dp"
+                android:background="@drawable/card_table"
                 android:id="@+id/table"/>
 
         <ImageView
-                android:layout_marginTop="140dp"
-                android:layout_marginLeft="35dp"
-                android:layout_marginRight="35dp"
-                android:layout_centerHorizontal="true"
-                android:layout_width="55dp"
-                android:layout_height="110dp"
-                app:srcCompat="@drawable/img_card"
-                android:id="@+id/img_yourCard"/>
-        <ImageView
-                android:layout_toStartOf="@id/img_yourCard"
                 android:layout_marginTop="120dp"
-                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="35dp"
                 android:layout_width="55dp"
-                android:layout_height="110dp"
-                app:srcCompat="@drawable/img_card"
+                android:layout_height="85dp"
+                android:layout_toStartOf="@id/img_card3"
+                app:srcCompat="@drawable/img_card_front"
                 android:id="@+id/img_card1"/>
+
         <ImageView
-                android:layout_marginTop="120dp"
-                android:layout_toEndOf="@id/img_yourCard"
+                android:layout_marginTop="140dp"
                 android:layout_centerHorizontal="true"
                 android:layout_width="55dp"
-                android:layout_height="110dp"
-                app:srcCompat="@drawable/img_card"
-                android:id="@+id/img_card2"/>
-        <TextView
-                android:layout_marginTop="130.5dp"
-                android:layout_marginLeft="237.5dp"
-                android:background="@drawable/card_placement"
-                android:layout_width="65dp"
                 android:layout_height="85dp"
-                android:id="@+id/placement_left"/>
-        <TextView
-                android:layout_toEndOf="@id/placement_left"
-                android:layout_marginTop="150.5dp"
-                android:layout_marginLeft="25dp"
-                android:background="@drawable/card_placement"
-                android:layout_width="65dp"
-                android:layout_height="85dp"
-                android:id="@+id/placement_center"/>
-        <TextView
-                android:layout_toEndOf="@id/placement_center"
-                android:layout_marginTop="130.5dp"
-                android:layout_marginLeft="24.5dp"
-                android:background="@drawable/card_placement"
-                android:layout_width="65dp"
-                android:layout_height="85dp"
-                android:id="@+id/placement_right"/>
+                app:srcCompat="@drawable/img_card_back"
+                android:id="@+id/img_card3"/>
+
         <ImageView
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="120dp"
+                android:layout_marginHorizontal="35dp"
                 android:layout_centerHorizontal="true"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:srcCompat="@drawable/deck_pic"
-                android:id="@+id/imageView"/>
+                android:layout_width="55dp"
+                android:layout_height="85dp"
+                android:layout_toEndOf="@id/img_card3"
+                app:srcCompat="@drawable/img_card_front"
+                android:id="@+id/img_card2"/>
+
+        <TextView
+                android:layout_marginTop="120dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_width="65dp"
+                android:layout_height="85dp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="42sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="@string/card_default"
+                android:background="@drawable/card_placement"
+                android:layout_toStartOf="@id/img_card3"
+                android:id="@+id/txt_card1"/>
+
+        <TextView
+                android:layout_marginTop="140dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="65dp"
+                android:layout_height="85dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="42sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:background="@drawable/card_placement"
+                android:id="@+id/txt_card3"/>
+
+        <TextView
+                android:layout_marginTop="120dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_width="65dp"
+                android:layout_height="85dp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="42sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="@string/card_default"
+                android:layout_toEndOf="@id/img_card3"
+                android:background="@drawable/card_placement"
+                android:id="@+id/txt_card2"/>
+
+        <ImageView
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="55dp"
+                android:layout_height="85dp"
+                app:srcCompat="@drawable/img_card_back"
+                android:id="@+id/img_back_card"/>
+
+        <Button
+                android:layout_centerVertical="true"
+                android:layout_width="75dp"
+                android:layout_height="20dp"
+                android:text="@string/btn_higher"
+                android:background="@drawable/btn_lower"
+                android:layout_toEndOf="@id/img_card2"
+                android:id="@+id/btn_higher"
+                android:onClick="btnHigher"/>
+
+        <Button
+                android:layout_centerVertical="true"
+                android:layout_width="75dp"
+                android:layout_height="20dp"
+                android:text="@string/btn_lower"
+                android:layout_toStartOf="@id/img_card1"
+                android:background="@drawable/btn_lower"
+                android:id="@+id/btn_lower"
+                android:onClick="btnLower"/>
 
     </RelativeLayout>
 
     <RelativeLayout
-            android:background="#2b2d2c"
-            android:layout_width="720dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="650dp"
+            android:layout_height="wrap_content"
+            android:background="#2b2d2c"
             android:layout_below="@id/card_panel">
 
         <Button
-                android:background="@drawable/btn_lower"
                 android:layout_toStartOf="@id/btn_shuffle"
                 android:layout_centerVertical="true"
                 android:layout_marginHorizontal="10dp"
                 android:layout_width="75dp"
                 android:layout_height="20dp"
                 android:text="@string/btn_fold"
-                android:id="@+id/btn_left"/>
+                android:background="@drawable/btn_lower"
+                android:id="@+id/btn_fold"
+                android:onClick="btnFold"/>
 
         <Button
-                android:background="@drawable/btn_shuffle"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 android:textColor="#FFFFFF"
                 android:layout_width="95dp"
                 android:layout_height="35dp"
-                android:drawableLeft="@drawable/ic_shuffle"
-                android:paddingLeft="35dp"
-                android:id="@+id/btn_shuffle"/>
+                android:drawableStart="@drawable/ic_shuffle"
+                android:padding="35dp"
+                android:background="@drawable/btn_shuffle"
+                android:id="@+id/btn_shuffle"
+                android:onClick="btnShuffle"/>
         <Button
                 android:background="@drawable/btn_lower"
                 android:layout_centerVertical="true"
@@ -130,18 +176,20 @@
                 android:layout_width="75dp"
                 android:layout_height="20dp"
                 android:text="@string/btn_bet"
-                android:id="@+id/btn_right"/>
+                android:id="@+id/btn_bet"
+                android:onClick="btnBet"/>
+
         <SeekBar
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/txt_money"
-                android:layout_toEndOf="@id/btn_right"
-                android:layout_marginStart="30dp"
-                android:layout_width="150dp"
-                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/btn_bet"
+                android:layout_marginStart="10dp"
+                android:layout_width="160dp"
+                android:layout_height="30dp"
                 android:progress="0"
                 android:thumb="@drawable/thumb_pic"
-                android:max="5"
+                android:max="10"
+                android:background="@drawable/txt_money"
                 android:id="@+id/seekBar"/>
 
     </RelativeLayout>
@@ -160,7 +208,7 @@
             android:layout_margin="10dp"
             android:layout_width="75dp"
             android:layout_height="24dp"
-            android:text="@string/reward"
+            android:text="@string/btn_reward"
             android:id="@+id/btn_reward"/>
 
 
