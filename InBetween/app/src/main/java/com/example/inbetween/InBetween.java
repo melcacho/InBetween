@@ -1,12 +1,16 @@
 package com.example.inbetween;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -19,15 +23,20 @@ public class InBetween extends AppCompatActivity {
             btnShuffle,
             btnBet,
             btnFold;
-    TextView txtCardOne,
+    TextView txtProgress,
+            txtCardOne,
             txtCardTwo,
             txtCardThree,
             txtMoney;
     ImageView cardThree;
+    SeekBar seekBar;
+
     int cardOne,
-            cardTwo;
+            cardTwo,
+            crntMoney;
     boolean higher = false,
             lower = false;
+    String text;
     String[] cardValues = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     Timer timer = new Timer();
     Random rand = new Random();
@@ -36,33 +45,90 @@ public class InBetween extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_between);
-        btnHigher = (Button) findViewById(R.id.btn_higher);
-        btnLower = (Button) findViewById(R.id.btn_lower);
-        btnShuffle = (Button) findViewById(R.id.btn_shuffle);
-        btnBet = (Button) findViewById(R.id.btn_bet);
-        btnFold = (Button) findViewById(R.id.btn_fold);
-        txtCardOne = (TextView) findViewById(R.id.txt_card1);
-        txtCardTwo = (TextView) findViewById(R.id.txt_card2);
-        txtCardThree = (TextView) findViewById(R.id.txt_card3);
-        txtMoney = (TextView) findViewById(R.id.txt_money);
-        cardThree = (ImageView) findViewById(R.id.img_card3);
+        btnHigher = findViewById(R.id.btn_higher);
+        btnLower = findViewById(R.id.btn_lower);
+        btnShuffle = findViewById(R.id.btn_shuffle);
+        btnBet = findViewById(R.id.btn_bet);
+        btnFold = findViewById(R.id.btn_fold);
+        txtCardOne = findViewById(R.id.txt_card1);
+        txtCardTwo = findViewById(R.id.txt_card2);
+        txtCardThree = findViewById(R.id.txt_card3);
+        txtMoney = findViewById(R.id.txt_money);
+        cardThree = findViewById(R.id.img_card3);
+        seekBar = findViewById(R.id.betting);
+        txtProgress = findViewById(R.id.txt_betMoney);
 
         reset();
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress *= 10;
+                txtProgress.setText("$ " + (String.valueOf(progress)));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        btnBet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                text = txtMoney.getText().toString().substring(2);
+                crntMoney = Integer.parseInt(text);
+                if (crntMoney == 0){
+                    btnBet.setEnabled(false);
+                    btnShuffle.setEnabled(false);
+                }
+                else {
+                    final ObjectAnimator oa1 = ObjectAnimator.ofFloat(cardThree, "scaleX", 1f, 0f);
+                    final ObjectAnimator oa2 = ObjectAnimator.ofFloat(cardThree, "scaleX", 0f, 1f);
+                    final ObjectAnimator oa3 = ObjectAnimator.ofFloat(txtCardThree, "scaleX", 0f, 1f);
+                    oa1.setInterpolator(new DecelerateInterpolator());
+                    oa2.setInterpolator(new AccelerateDecelerateInterpolator());
+                    oa3.setInterpolator(new AccelerateDecelerateInterpolator());
+                    oa1.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            cardThree.setImageResource(R.drawable.img_card_front);
+                            oa2.start();
+                            int card3 = rand.nextInt(13);
+
+                            if((cardOne == cardTwo && (card3 > cardOne && higher || card3 < cardOne && lower)) ||
+                                    (cardOne != cardTwo && ((cardOne < card3 && card3 < cardTwo) || (cardOne > card3 && card3 > cardTwo)))) {
+                                txtMoney.setText("$ " + (crntMoney + 50));
+                            } else {
+                                txtMoney.setText("$ " + (crntMoney - 50));
+                            }
+                            cardThree.setImageResource(R.drawable.img_card_front);
+                            txtCardThree.setText(cardValues[card3]);
+                            reset();
+                        }
+                    });
+                    oa1.start();
+                    oa3.start();
+                }
+            }
+        });
     }
 
     public void btnShuffle(View view) throws InterruptedException {
         shuffle();
     }
 
-    public void btnBet(View view) {
-        check();
-    }
-
-    public void btnFold(View view) {
+    public void fold(View view) {
         reset();
     }
 
-    public void btnHigher(View view) {
+    public void higher(View view) {
         if(lower) {
             lower = false;
         }
@@ -71,7 +137,7 @@ public class InBetween extends AppCompatActivity {
         higher = true;
     }
 
-    public void btnLower(View view) {
+    public void lower(View view) {
         if(higher) {
             higher = false;
         }
@@ -107,25 +173,6 @@ public class InBetween extends AppCompatActivity {
         btnLower.setBackground(getDrawable(R.drawable.btn_lower));
         btnShuffle.setEnabled(true);
         btnShuffle.setBackground(getDrawable(R.drawable.btn_shuffle));
-    }
-
-    public void check() {
-        int crntMoney;
-        int card3 = rand.nextInt(13);
-
-        String text = txtMoney.getText().toString().substring(2);
-        crntMoney = new Integer(text);
-
-        if((cardOne == cardTwo && (card3 > cardOne && higher || card3 < cardOne && lower)) ||
-                (cardOne != cardTwo && ((cardOne < card3 && card3 < cardTwo) || (cardOne > card3 && card3 > cardTwo)))) {
-            txtMoney.setText("$ " + String.valueOf(crntMoney+50));
-        } else {
-            txtMoney.setText("$ " + String.valueOf(crntMoney-50));
-        }
-
-        cardThree.setImageResource(R.drawable.img_card_front);
-        txtCardThree.setText(cardValues[card3]);
-        reset();
     }
 
     public void shuffle() {
