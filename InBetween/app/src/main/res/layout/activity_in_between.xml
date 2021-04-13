@@ -179,7 +179,7 @@
                 android:padding="35dp"
                 android:background="@drawable/btn_shuffle"
                 android:id="@+id/btn_shuffle"
-                android:onClick="btnShuffle"/>
+                android:onClick="shuffle"/>
         <Button
                 android:background="@drawable/btn_lower"
                 android:layout_centerVertical="true"

@@ -7,10 +7,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -23,16 +20,17 @@ public class InBetween extends AppCompatActivity {
             btnShuffle,
             btnBet,
             btnFold;
-    TextView txtProgress,
+    TextView txtBetMoney,
             txtCardOne,
             txtCardTwo,
             txtCardThree,
             txtMoney;
-    ImageView cardThree;
+    ImageView imgCard3;
     SeekBar seekBar;
 
     int cardOne,
             cardTwo,
+            cardThree,
             crntMoney;
     boolean higher = false,
             lower = false;
@@ -54,17 +52,21 @@ public class InBetween extends AppCompatActivity {
         txtCardTwo = findViewById(R.id.txt_card2);
         txtCardThree = findViewById(R.id.txt_card3);
         txtMoney = findViewById(R.id.txt_money);
-        cardThree = findViewById(R.id.img_card3);
+        imgCard3 = findViewById(R.id.img_card3);
         seekBar = findViewById(R.id.betting);
-        txtProgress = findViewById(R.id.txt_betMoney);
+        txtBetMoney = findViewById(R.id.txt_betMoney);
+
+        text = txtMoney.getText().toString().substring(2);
+        crntMoney = Integer.parseInt(text);
 
         reset();
+        setBetFoldEnabled(false);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress *= 10;
-                txtProgress.setText("$ " + (String.valueOf(progress)));
+                txtBetMoney.setText(String .valueOf("$ " + (String.valueOf(progress))));
             }
 
             @Override
@@ -81,15 +83,19 @@ public class InBetween extends AppCompatActivity {
         btnBet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                text = txtMoney.getText().toString().substring(2);
-                crntMoney = Integer.parseInt(text);
-                if (crntMoney == 0){
-                    btnBet.setEnabled(false);
-                    btnShuffle.setEnabled(false);
-                }
-                else {
-                    final ObjectAnimator oa1 = ObjectAnimator.ofFloat(cardThree, "scaleX", 1f, 0f);
-                    final ObjectAnimator oa2 = ObjectAnimator.ofFloat(cardThree, "scaleX", 0f, 1f);
+                final int betMoney = getInt(txtBetMoney);
+                crntMoney = getInt(txtMoney);
+
+                if (betMoney > crntMoney) {
+                    Toast.makeText(getApplicationContext(),"Insufficient Money",Toast.LENGTH_LONG).show();
+                } else if(betMoney == 0) {
+                    Toast.makeText(getApplicationContext(),"Assign Bet Amount",Toast.LENGTH_LONG).show();
+                } else if(cardOne == cardTwo && !higher && !lower) {
+                    Toast.makeText(getApplicationContext(),"Select Higher or Lower",Toast.LENGTH_LONG).show();
+                } else {
+                    reset();
+                    final ObjectAnimator oa1 = ObjectAnimator.ofFloat(imgCard3, "scaleX", 1f, 0f);
+                    final ObjectAnimator oa2 = ObjectAnimator.ofFloat(imgCard3, "scaleX", 0f, 1f);
                     final ObjectAnimator oa3 = ObjectAnimator.ofFloat(txtCardThree, "scaleX", 0f, 1f);
                     oa1.setInterpolator(new DecelerateInterpolator());
                     oa2.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -98,19 +104,26 @@ public class InBetween extends AppCompatActivity {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            cardThree.setImageResource(R.drawable.img_card_front);
+                            imgCard3.setImageResource(R.drawable.img_card_front);
                             oa2.start();
-                            int card3 = rand.nextInt(13);
+                            crntMoney = getInt(txtMoney);
 
-                            if((cardOne == cardTwo && (card3 > cardOne && higher || card3 < cardOne && lower)) ||
-                                    (cardOne != cardTwo && ((cardOne < card3 && card3 < cardTwo) || (cardOne > card3 && card3 > cardTwo)))) {
-                                txtMoney.setText("$ " + (crntMoney + 50));
+                            if ((cardOne == cardTwo && (cardThree > cardOne && higher || cardThree < cardOne && lower)) ||
+                                    (cardOne != cardTwo && ((cardOne < cardThree && cardThree < cardTwo) || (cardOne > cardThree && cardThree > cardTwo)))) {
+                                txtMoney.setText(String.valueOf("$ " + (crntMoney + betMoney)));
                             } else {
-                                txtMoney.setText("$ " + (crntMoney - 50));
+                                txtMoney.setText(String.valueOf("$ " + (crntMoney - betMoney)));
                             }
-                            cardThree.setImageResource(R.drawable.img_card_front);
-                            txtCardThree.setText(cardValues[card3]);
-                            reset();
+
+                            imgCard3.setImageResource(R.drawable.img_card_front);
+                            txtCardThree.setText(cardValues[cardThree]);
+                            crntMoney = getInt(txtMoney);
+
+                            if (crntMoney == 0){
+                                btnShuffle.setEnabled(false);
+                                btnShuffle.setBackground(getDrawable(R.drawable.btn_disabled));
+                                seekBar.setProgress(0);
+                            }
                         }
                     });
                     oa1.start();
@@ -120,11 +133,13 @@ public class InBetween extends AppCompatActivity {
         });
     }
 
-    public void btnShuffle(View view) throws InterruptedException {
+    public void shuffle(View view) throws InterruptedException {
         shuffle();
     }
 
     public void fold(View view) {
+        txtCardOne.setText(R.string.card_default);
+        txtCardTwo.setText(R.string.card_default);
         reset();
     }
 
@@ -165,20 +180,21 @@ public class InBetween extends AppCompatActivity {
     }
 
     public void reset() {
-        setHighLowVisibility(View.GONE);
+        btnShuffle.setEnabled(true);
+        btnShuffle.setBackground(getDrawable(R.drawable.btn_shuffle));
         setBetFoldEnabled(false);
+        setHighLowVisibility(View.GONE);
         higher = false;
         lower = false;
         btnHigher.setBackground(getDrawable(R.drawable.btn_lower));
         btnLower.setBackground(getDrawable(R.drawable.btn_lower));
-        btnShuffle.setEnabled(true);
-        btnShuffle.setBackground(getDrawable(R.drawable.btn_shuffle));
     }
 
     public void shuffle() {
+        seekBar.setProgress(0);
         btnShuffle.setEnabled(false);
         btnShuffle.setBackground(getDrawable(R.drawable.btn_disabled));
-        cardThree.setImageResource(R.drawable.img_card_back);
+        imgCard3.setImageResource(R.drawable.img_card_back);
         txtCardThree.setText("");
         new CountDownTimer(1000, 50) {
             int i = 0;
@@ -192,6 +208,7 @@ public class InBetween extends AppCompatActivity {
             public void onFinish() {
                 cardOne = rand.nextInt(13);
                 cardTwo = rand.nextInt(13);
+                cardThree = rand.nextInt(13);
                 while((cardOne - cardTwo) == 1 || (cardTwo - cardOne) == 1) {
                     cardOne = rand.nextInt(13);
                     cardTwo = rand.nextInt(13);
@@ -203,6 +220,11 @@ public class InBetween extends AppCompatActivity {
                 setBetFoldEnabled(true);
             }
         }.start();
+    }
+
+    public int getInt(TextView txt) {
+        text = txt.getText().toString().substring(2);
+        return Integer.parseInt(text);
     }
 
     @Override
