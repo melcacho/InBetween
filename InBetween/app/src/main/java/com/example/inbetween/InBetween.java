@@ -238,8 +238,8 @@ public class InBetween extends AppCompatActivity {
             }
 
             public void onFinish() {
-                cardOne = 5;//rand.nextInt(13);
-                cardTwo = 5;//rand.nextInt(13);
+                cardOne = rand.nextInt(13);
+                cardTwo = rand.nextInt(13);
                 cardThree = rand.nextInt(13);
                 while((cardOne - cardTwo) == 1 || (cardTwo - cardOne) == 1) {
                     cardOne = rand.nextInt(13);
