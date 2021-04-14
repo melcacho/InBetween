@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">InBetween</string>
+    <string name="btn_play">Play</string>
+    <string name="money">$ 100</string>
+    <string name="btn_fold">Fold</string>
+    <string name="btn_bet">Bet</string>
+    <string name="btn_shuffle">Shuffle</string>
+    <string name="btn_reward">Reward</string>
+    <string name="btn_higher">higher</string>
+    <string name="btn_lower">lower</string>
+    <string name="card_default">\?</string>
+</resources>
