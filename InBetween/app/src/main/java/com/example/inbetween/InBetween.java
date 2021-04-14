@@ -3,18 +3,20 @@ package com.example.inbetween;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
+import android.media.MediaPlayer;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-
 import java.util.Random;
-import java.util.Timer;
 
 public class InBetween extends AppCompatActivity {
+    ImageButton btnMute;
     Button btnHigher,
             btnLower,
             btnShuffle,
@@ -33,11 +35,12 @@ public class InBetween extends AppCompatActivity {
             cardThree,
             crntMoney;
     boolean higher = false,
-            lower = false;
+            lower = false,
+            mute = false;
     String text;
     String[] cardValues = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-    Timer timer = new Timer();
     Random rand = new Random();
+    MediaPlayer ring;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +58,22 @@ public class InBetween extends AppCompatActivity {
         imgCard3 = findViewById(R.id.img_card3);
         seekBar = findViewById(R.id.betting);
         txtBetMoney = findViewById(R.id.txt_betMoney);
+        btnMute = findViewById(R.id.btn_mute);
 
         text = txtMoney.getText().toString().substring(2);
         crntMoney = Integer.parseInt(text);
 
+        ring= MediaPlayer.create(InBetween.this,R.raw.bg_music);
+        ring.start();
+        ring.isLooping();
         reset();
         setBetFoldEnabled(false);
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress *= 10;
-                txtBetMoney.setText(String .valueOf("$ " + (String.valueOf(progress))));
+                txtBetMoney.setText("$ " + (progress));
             }
 
             @Override
@@ -101,19 +108,23 @@ public class InBetween extends AppCompatActivity {
                     oa2.setInterpolator(new AccelerateDecelerateInterpolator());
                     oa3.setInterpolator(new AccelerateDecelerateInterpolator());
                     oa1.addListener(new AnimatorListenerAdapter() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
+
                             imgCard3.setImageResource(R.drawable.img_card_front);
                             oa2.start();
                             crntMoney = getInt(txtMoney);
 
                             if ((cardOne == cardTwo && (cardThree > cardOne && higher || cardThree < cardOne && lower)) ||
                                     (cardOne != cardTwo && ((cardOne < cardThree && cardThree < cardTwo) || (cardOne > cardThree && cardThree > cardTwo)))) {
-                                txtMoney.setText(String.valueOf("$ " + (crntMoney + betMoney)));
+                                txtMoney.setText("$ " + (crntMoney + betMoney));
                             } else {
-                                txtMoney.setText(String.valueOf("$ " + (crntMoney - betMoney)));
+                                txtMoney.setText("$ " + (crntMoney - betMoney));
                             }
+                            Log.e("MSG:                   ", "Lower: " + String.valueOf(lower));
+                            Log.e("MSG:                   ", "Higher: " + String.valueOf(higher));
 
                             imgCard3.setImageResource(R.drawable.img_card_front);
                             txtCardThree.setText(cardValues[cardThree]);
@@ -128,13 +139,28 @@ public class InBetween extends AppCompatActivity {
                     });
                     oa1.start();
                     oa3.start();
+                    oa3.setDuration(500);
                 }
             }
         });
     }
 
-    public void shuffle(View view) throws InterruptedException {
-        shuffle();
+    public void mute(View view){
+        if(mute){
+            btnMute.setImageResource(R.drawable.ic_volume_on);
+            ring.start();
+            ring.isLooping();
+            mute = false;
+        }
+        else{
+            btnMute.setImageResource(R.drawable.ic_volume_off);
+            ring.pause();
+            mute = true;
+        }
+    }
+
+    public void shuffle(View view) {
+        cardShuffle();
     }
 
     public void fold(View view) {
@@ -148,7 +174,9 @@ public class InBetween extends AppCompatActivity {
             lower = false;
         }
         btnLower.setBackground(getDrawable(R.drawable.btn_disabled));
-        btnHigher.setBackground(getDrawable(R.drawable.btn_lower));
+        btnHigher.setBackground(getDrawable(R.drawable.btn_bet));
+        btnFold.setBackground(getDrawable(R.drawable.btn_disabled));
+        btnFold.setEnabled(false);
         higher = true;
     }
 
@@ -157,7 +185,9 @@ public class InBetween extends AppCompatActivity {
             higher = false;
         }
         btnHigher.setBackground(getDrawable(R.drawable.btn_disabled));
-        btnLower.setBackground(getDrawable(R.drawable.btn_lower));
+        btnLower.setBackground(getDrawable(R.drawable.btn_bet));
+        btnFold.setBackground(getDrawable(R.drawable.btn_disabled));
+        btnFold.setEnabled(false);
         lower = true;
     }
 
@@ -172,7 +202,7 @@ public class InBetween extends AppCompatActivity {
 
         if(status) {
             btnBet.setBackground(getDrawable(R.drawable.btn_bet));
-            btnFold.setBackground(getDrawable(R.drawable.btn_bet));
+            btnFold.setBackground(getDrawable(R.drawable.btn_fold));
         } else {
             btnBet.setBackground(getDrawable(R.drawable.btn_disabled));
             btnFold.setBackground(getDrawable(R.drawable.btn_disabled));
@@ -180,22 +210,24 @@ public class InBetween extends AppCompatActivity {
     }
 
     public void reset() {
+        seekBar.setProgress(0);
+        seekBar.setEnabled(false);
         btnShuffle.setEnabled(true);
         btnShuffle.setBackground(getDrawable(R.drawable.btn_shuffle));
         setBetFoldEnabled(false);
         setHighLowVisibility(View.GONE);
+    }
+
+    public void cardShuffle() {
+        btnShuffle.setEnabled(false);
+        seekBar.setEnabled(true);
+        btnShuffle.setBackground(getDrawable(R.drawable.btn_disabled));
+        imgCard3.setImageResource(R.drawable.img_card_back);
+        txtCardThree.setText("");
         higher = false;
         lower = false;
         btnHigher.setBackground(getDrawable(R.drawable.btn_lower));
         btnLower.setBackground(getDrawable(R.drawable.btn_lower));
-    }
-
-    public void shuffle() {
-        seekBar.setProgress(0);
-        btnShuffle.setEnabled(false);
-        btnShuffle.setBackground(getDrawable(R.drawable.btn_disabled));
-        imgCard3.setImageResource(R.drawable.img_card_back);
-        txtCardThree.setText("");
         new CountDownTimer(1000, 50) {
             int i = 0;
 
@@ -206,8 +238,8 @@ public class InBetween extends AppCompatActivity {
             }
 
             public void onFinish() {
-                cardOne = rand.nextInt(13);
-                cardTwo = rand.nextInt(13);
+                cardOne = 5;//rand.nextInt(13);
+                cardTwo = 5;//rand.nextInt(13);
                 cardThree = rand.nextInt(13);
                 while((cardOne - cardTwo) == 1 || (cardTwo - cardOne) == 1) {
                     cardOne = rand.nextInt(13);
@@ -215,7 +247,6 @@ public class InBetween extends AppCompatActivity {
                 }
                 txtCardOne.setText(cardValues[cardOne]);
                 txtCardTwo.setText(cardValues[cardTwo]);
-
                 if(cardOne == cardTwo) setHighLowVisibility(View.VISIBLE);
                 setBetFoldEnabled(true);
             }
@@ -228,13 +259,23 @@ public class InBetween extends AppCompatActivity {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        ring.pause();
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        ring.start();
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
             hideSystemUI();
         }
     }
-
     private void hideSystemUI() {
         // Enables regular immersive mode.
         // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.

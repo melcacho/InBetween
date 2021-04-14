@@ -90,8 +90,14 @@
                 android:textSize="42sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:background="@drawable/card_placement"
                 android:id="@+id/txt_card3"/>
+        <TextView
+                android:layout_marginTop="140dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="65dp"
+                android:layout_height="85dp"
+                android:background="@drawable/card_placement"
+                android:id="@+id/txt_placeCard3"/>
 
         <TextView
                 android:layout_marginTop="120dp"
@@ -165,7 +171,8 @@
                 android:layout_width="75dp"
                 android:layout_height="20dp"
                 android:text="@string/btn_fold"
-                android:background="@drawable/btn_lower"
+                android:background="@drawable/btn_fold"
+                android:textColor="#ffffff"
                 android:id="@+id/btn_fold"
                 android:onClick="fold"/>
 
@@ -181,12 +188,13 @@
                 android:id="@+id/btn_shuffle"
                 android:onClick="shuffle"/>
         <Button
-                android:background="@drawable/btn_lower"
+                android:background="@drawable/btn_bet"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/btn_shuffle"
                 android:layout_marginHorizontal="10dp"
                 android:layout_width="75dp"
                 android:layout_height="20dp"
+                android:textColor="#ffffff"
                 android:text="@string/btn_bet"
                 android:id="@+id/btn_bet"/>
 
@@ -199,21 +207,27 @@
                 android:progress="0"
                 android:thumb="@drawable/thumb_pic"
                 android:max="10"
+                android:maxHeight="3dp"
                 android:value="0"
                 android:valueFrom="0"
                 android:valueTo="100"
+                android:progressDrawable="@drawable/gradient_color"
                 android:background="@drawable/txt_money"
                 android:id="@+id/betting"/>
 
     </RelativeLayout>
 
     <ImageButton
-            android:layout_margin="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#2b2d2c"
             app:srcCompat="@drawable/ic_volume_on"
-            android:id="@+id/btn_mute"/>
+            android:id="@+id/btn_mute"
+            android:onClick="mute"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"/>
 
     <Button
             android:background="@drawable/btn_reward"
