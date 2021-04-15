@@ -125,7 +125,7 @@
         <Button
                 android:layout_centerVertical="true"
                 android:layout_width="75dp"
-                android:layout_height="20dp"
+                android:layout_height="40dp"
                 android:text="@string/btn_higher"
                 android:background="@drawable/btn_lower"
                 android:layout_toEndOf="@id/img_card2"
@@ -135,7 +135,7 @@
         <Button
                 android:layout_centerVertical="true"
                 android:layout_width="75dp"
-                android:layout_height="20dp"
+                android:layout_height="40dp"
                 android:text="@string/btn_lower"
                 android:layout_toStartOf="@id/img_card1"
                 android:background="@drawable/btn_lower"
