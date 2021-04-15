@@ -20,12 +20,16 @@
         android:id="@+id/imgIntroBG"/>
 
     <ImageButton
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#2b2d2c"
-        app:srcCompat="@drawable/ic_question_mark"
-        android:id="@+id/imgHowToPlay"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#2b2d2c"
+            app:srcCompat="@drawable/ic_question_mark"
+            android:id="@+id/imgHowToPlay"
+            android:onClick="howToPlay"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"/>
 
     <Button
         android:background="@drawable/btn_play"
