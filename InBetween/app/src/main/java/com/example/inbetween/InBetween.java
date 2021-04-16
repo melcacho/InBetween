@@ -20,25 +20,11 @@ import java.util.Calendar;
 import java.util.Random;
 
 public class InBetween extends AppCompatActivity {
-    int cardOne,
-            cardTwo,
-            cardThree,
-            currentMoney;
-    boolean higher = false,
-            lower = false,
-            mute = false;
+    int cardOne, cardTwo, cardThree, currentMoney;
+    boolean higher = false, lower = false, mute = false;
     ImageButton btnMute;
-    Button btnHigher,
-            btnLower,
-            btnShuffle,
-            btnBet,
-            btnFold,
-            btnReward;
-    TextView txtBetMoney,
-            txtCardOne,
-            txtCardTwo,
-            txtCardThree,
-            txtMoney;
+    Button btnHigher, btnLower,btnShuffle, btnBet, btnFold, btnReward;
+    TextView txtBetMoney, txtCardOne, txtCardTwo, txtCardThree, txtMoney;
     ImageView imgCard3;
     SeekBar seekBar;
     String text;
@@ -70,9 +56,11 @@ public class InBetween extends AppCompatActivity {
         btnMute = findViewById(R.id.btn_mute);
 
         ring= MediaPlayer.create(InBetween.this,R.raw.bg_music);
-        ring.isLooping();
-        ring.start();
-
+        if(ring!= null)
+        {
+            ring.setLooping(true);
+            ring.start();
+        }
         sharedPreferences = getSharedPreferences("my_save", MODE_PRIVATE);
 
         loadState();
@@ -87,15 +75,11 @@ public class InBetween extends AppCompatActivity {
                 progress *= 10;
                 txtBetMoney.setText("$ " + (progress));
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -163,7 +147,8 @@ public class InBetween extends AppCompatActivity {
 
         if (sharedPreferences.getBoolean(dateInStr, false)){
             Toast.makeText(getApplicationContext(),"Already Received Daily Reward",Toast.LENGTH_LONG).show();
-        }else{
+        }
+        else{
             Toast.makeText(getApplicationContext(),"Received $100",Toast.LENGTH_LONG).show();
             currentMoney += 100;
             editor.putBoolean(dateInStr, true);
@@ -273,6 +258,8 @@ public class InBetween extends AppCompatActivity {
     }
 
     public void reset() {
+        btnHigher.setTextColor(getColor(R.color.black));
+        btnLower.setTextColor(getColor(R.color.black));
         seekBar.setProgress(0);
         seekBar.setEnabled(false);
         btnShuffle.setEnabled(true);
@@ -293,7 +280,6 @@ public class InBetween extends AppCompatActivity {
         btnLower.setBackground(getDrawable(R.drawable.btn_lower));
         new CountDownTimer(1000, 50) {
             int i = 0;
-
             public void onTick(long millisUntilFinished) {
                 txtCardOne.setText(cardValues[i]);
                 txtCardTwo.setText(cardValues[i++]);
@@ -301,8 +287,8 @@ public class InBetween extends AppCompatActivity {
             }
 
             public void onFinish() {
-                cardOne = 5;rand.nextInt(13);
-                cardTwo = 5;rand.nextInt(13);
+                cardOne = rand.nextInt(13);
+                cardTwo = rand.nextInt(13);
                 cardThree = rand.nextInt(13);
                 while((cardOne - cardTwo) == 1 || (cardTwo - cardOne) == 1) {
                     cardOne = rand.nextInt(13);
