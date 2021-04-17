@@ -230,13 +230,14 @@
             android:layout_marginBottom="10dp"/>
 
     <Button
-            android:background="@drawable/btn_reward"
-            android:layout_toEndOf="@id/btn_mute"
-            android:layout_margin="10dp"
-            android:layout_width="75dp"
-            android:layout_height="24dp"
-            android:text="@string/btn_reward"
-            android:id="@+id/btn_reward"/>
-
+        android:background="@drawable/btn_reward"
+        android:layout_toEndOf="@id/btn_mute"
+        android:layout_margin="10dp"
+        android:layout_width="75dp"
+        android:layout_height="24dp"
+        android:text="@string/btn_reward"
+        android:textColor="@color/white"
+        android:id="@+id/btn_reward"
+        android:onClick="reward"/>
 
 </RelativeLayout>

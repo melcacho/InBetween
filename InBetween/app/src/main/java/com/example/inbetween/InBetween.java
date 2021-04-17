@@ -142,14 +142,20 @@ public class InBetween extends AppCompatActivity {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("d-M-y");
         Calendar cal = Calendar.getInstance();
         String dateInStr = sdf.format(cal.getTime());
-
+        Log.e("_CHECK: ", "reward");
         editor = sharedPreferences.edit();
 
         if (sharedPreferences.getBoolean(dateInStr, false)){
             Toast.makeText(getApplicationContext(),"Already Received Daily Reward",Toast.LENGTH_LONG).show();
+            btnReward.setBackground(getDrawable(R.drawable.btn_reward));
+            btnReward.setTextColor(getColor(R.color.white));
+            btnReward.setEnabled(true);
         }
         else{
             Toast.makeText(getApplicationContext(),"Received $100",Toast.LENGTH_LONG).show();
+            btnReward.setBackground(getDrawable(R.drawable.btn_disabled));
+            btnReward.setTextColor(getColor(R.color.grey));
+            btnReward.setEnabled(false);
             currentMoney += 100;
             editor.putBoolean(dateInStr, true);
             editor.apply();
@@ -169,7 +175,7 @@ public class InBetween extends AppCompatActivity {
             btnReward.setEnabled(false);
 
         }else{
-            btnReward.setBackground(getDrawable(R.drawable.btn_disabled));
+            btnReward.setBackground(getDrawable(R.drawable.btn_reward));
             btnReward.setTextColor(getColor(R.color.white));
             btnReward.setEnabled(true);
         }
