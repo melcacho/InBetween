@@ -113,8 +113,10 @@ public class InBetween extends AppCompatActivity {
                             if ((cardOne == cardTwo && (cardThree > cardOne && higher || cardThree < cardOne && lower)) ||
                                     (cardOne != cardTwo && ((cardOne < cardThree && cardThree < cardTwo) || (cardOne > cardThree && cardThree > cardTwo)))) {
                                 currentMoney += betMoney;
+                                Toast.makeText(getApplicationContext(),"YOU WON $" + betMoney,Toast.LENGTH_LONG).show();
                             } else {
                                 currentMoney -= betMoney;
+                                Toast.makeText(getApplicationContext(),"YOU LOST",Toast.LENGTH_LONG).show();
                             }
                             Log.e("Check_currentMoney:", String.valueOf(currentMoney));
                             saveState();
